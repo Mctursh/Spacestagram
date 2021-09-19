@@ -1,16 +1,21 @@
 import './App.css';
+import Header from './components/Header';
+import Main from './components/Main';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>SpaceStagram</h1>
-      </header>
+    <div className="app">
+      <section>
+        <Header />
+        <Main />
+      </section>      
     </div>
   );
 }
 
 export default App;
+
+
 
 
 // https://api.nasa.gov/planetary/apod?api_key=raGisHkQN11NgNhPxcUPvMbCIbxSCc3yooEkPh8Z&count=5\
