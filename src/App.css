@@ -25,5 +25,6 @@ section{
   display: flex;
   flex-direction: column;
   color: #4B6587;
+  padding-top: 1em;
 }
 

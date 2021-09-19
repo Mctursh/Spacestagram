@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-const useFetch = ({ url }) => {
+const useFetch = (url) => {
 
     const [Data, setData] = useState({
         articles: [],
@@ -10,35 +10,44 @@ const useFetch = ({ url }) => {
     })
 
     useEffect(() => {
-        async function fetch_ (url) {
-            const raw = await fetch(url)
-            if (!raw.ok) {             
-                throw Error()
+        const process = (attempt) => {
+        fetch(url)
+        .then((res) => {
+
+            //Handling errors 
+            if (!res.ok) {             
+                if( attempt < 3) {
+                    setTimeout(() => process(attempt + 1) ,1000)                      
+                } else {
+                    throw Error()
+                }
             } else {
-                const json = await raw.json()
-                setData((prev) => {
+                return res.json()
+            }
+        })
+        .then((data) => {
+            
+            // api json response
+            setData((prev) => {
                     return {
                         ...prev,
                         loading: false,
                         error: false,
-                        articles: json
+                        articles: data
                     }
                 })
-            }
-        }
-        
-        try {
-            fetch_("https://api.nasa.gov/planetary/apod?api_key=raGisHkQN11NgNhPxcUPvMbCIbxSCc3yooEkPh8Z&count=5")            
-        } catch (error) {
+        }).catch(() =>
             setData((prev) => {
-                return {
-                    ...prev,
-                    errorMsg: error,
-                    loading: false,
-                    error: true
-                }
-            })
-        }
+                    return {
+                        ...prev,
+                        errorMsg: "Couldn't fetch data",
+                        loading: false,
+                        error: true
+                    }
+                })
+        )
+    }
+    process(0)
     }, [url])
     return Data 
 }

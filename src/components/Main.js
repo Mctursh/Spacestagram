@@ -11,20 +11,14 @@ function Main() {
     const { articles, errorMsg, error, loading } = data
 
     const handleLike = (e) => {
-
         if (e.keyCode === 13) {  // Checks if the key pressed is the ENTER key
-            setLike((p) => {
-                return {
-                    ...p,
-                    like: !p.like
-                }
-            } )
+            setLike((p) => !p)
         }
     }
 
     return (
         <main role="main">
-            {!loading ? articles.map(({ date, explanation, url, title }, idx) => <Article key={idx} imgUrl={url} handleLike={handleLike} date={date} desc={explanation} setLike={setLike} like={like} title={title} />) : <Loader error={error} errorMsg={errorMsg}/>} 
+            {!loading && !error ? articles.map(({ date, explanation, url, title }, idx) => <Article key={idx} imgUrl={url} handleLike={handleLike} date={date} desc={explanation} setLike={setLike} like={like} title={title} />) : <Loader error={error} errorMsg={errorMsg}/>} 
         </main>
     )
 }
